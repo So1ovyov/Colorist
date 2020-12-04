@@ -10,7 +10,6 @@
 		F17B7344257A248C00F0F0C5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F17B7343257A248C00F0F0C5 /* AppDelegate.swift */; };
 		F17B7346257A248C00F0F0C5 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F17B7345257A248C00F0F0C5 /* SceneDelegate.swift */; };
 		F17B7348257A248C00F0F0C5 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F17B7347257A248C00F0F0C5 /* ViewController.swift */; };
-		F17B734B257A248C00F0F0C5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F17B7349257A248C00F0F0C5 /* Main.storyboard */; };
 		F17B734D257A248E00F0F0C5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F17B734C257A248E00F0F0C5 /* Assets.xcassets */; };
 		F17B7350257A248E00F0F0C5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F17B734E257A248E00F0F0C5 /* LaunchScreen.storyboard */; };
 /* End PBXBuildFile section */
@@ -20,7 +19,6 @@
 		F17B7343257A248C00F0F0C5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F17B7345257A248C00F0F0C5 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		F17B7347257A248C00F0F0C5 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		F17B734A257A248C00F0F0C5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		F17B734C257A248E00F0F0C5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F17B734F257A248E00F0F0C5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F17B7351257A248E00F0F0C5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -59,7 +57,6 @@
 				F17B7343257A248C00F0F0C5 /* AppDelegate.swift */,
 				F17B7345257A248C00F0F0C5 /* SceneDelegate.swift */,
 				F17B7347257A248C00F0F0C5 /* ViewController.swift */,
-				F17B7349257A248C00F0F0C5 /* Main.storyboard */,
 				F17B734C257A248E00F0F0C5 /* Assets.xcassets */,
 				F17B734E257A248E00F0F0C5 /* LaunchScreen.storyboard */,
 				F17B7351257A248E00F0F0C5 /* Info.plist */,
@@ -126,7 +123,6 @@
 			files = (
 				F17B7350257A248E00F0F0C5 /* LaunchScreen.storyboard in Resources */,
 				F17B734D257A248E00F0F0C5 /* Assets.xcassets in Resources */,
-				F17B734B257A248C00F0F0C5 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -146,14 +142,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		F17B7349257A248C00F0F0C5 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				F17B734A257A248C00F0F0C5 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		F17B734E257A248E00F0F0C5 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -289,6 +277,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = W2W2AQ8GG8;
 				INFOPLIST_FILE = Colorist/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -296,7 +285,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = Solovyov.Colorist;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -308,6 +297,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = W2W2AQ8GG8;
 				INFOPLIST_FILE = Colorist/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -315,7 +305,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = Solovyov.Colorist;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

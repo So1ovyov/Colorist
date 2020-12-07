@@ -47,6 +47,8 @@ class ViewController: UIViewController {
         let slider = UISlider()
         slider.translatesAutoresizingMaskIntoConstraints = false
         slider.tintColor = .systemRed
+        slider.minimumValue = 0
+        slider.maximumValue = 255
         slider.addTarget(self, action: #selector(sliderValueChanged), for: .valueChanged)
         return slider
     }()
@@ -55,6 +57,8 @@ class ViewController: UIViewController {
         let slider = UISlider()
         slider.translatesAutoresizingMaskIntoConstraints = false
         slider.tintColor = .systemGreen
+        slider.minimumValue = 0
+        slider.maximumValue = 255
         slider.addTarget(self, action: #selector(sliderValueChanged), for: .valueChanged)
         return slider
     }()
@@ -63,6 +67,8 @@ class ViewController: UIViewController {
         let slider = UISlider()
         slider.translatesAutoresizingMaskIntoConstraints = false
         slider.tintColor = .systemBlue
+        slider.minimumValue = 0
+        slider.maximumValue = 255
         slider.addTarget(self, action: #selector(sliderValueChanged), for: .valueChanged)
         return slider
     }()
@@ -95,18 +101,18 @@ class ViewController: UIViewController {
         
         if redSwitch.isOn {
             red = CGFloat(redSlider.value)
-            textRed = String(redSlider.value)
+            textRed = String(lroundf(redSlider.value))
         }
         if greenSwitch.isOn {
             green = CGFloat(greenSlider.value)
-            textGreen = String(greenSlider.value)
+            textGreen = String(lroundf(greenSlider.value))
         }
         if blueSwitch.isOn {
             blue = CGFloat(blueSlider.value)
-            textBlue = String(blueSlider.value)
+            textBlue = String(lroundf(blueSlider.value))
         }
         
-        let color = UIColor(red: red, green: green, blue: blue, alpha: 1)
+        let color = UIColor(red: red/255, green: green/255, blue: blue/255, alpha: 1)
         colorView.backgroundColor = color
         redLabel.text = textRed
         greenLabel.text = textGreen
@@ -127,9 +133,9 @@ class ViewController: UIViewController {
         redSwitch.isOn = true
         greenSwitch.isOn = true
         blueSwitch.isOn = true
-        redSlider.value = 1.0
-        greenSlider.value = 1.0
-        blueSlider.value = 1.0
+        redSlider.value = 255
+        greenSlider.value = 255
+        blueSlider.value = 255
         updateColor()
     }
     
@@ -138,9 +144,9 @@ class ViewController: UIViewController {
         redSwitch.isOn = true
         greenSwitch.isOn = true
         blueSwitch.isOn = true
-        redSlider.value = 0.0
-        greenSlider.value = 0.0
-        blueSlider.value = 0.0
+        redSlider.value = 0
+        greenSlider.value = 0
+        blueSlider.value = 0
         updateColor()
     }
     
@@ -149,9 +155,9 @@ class ViewController: UIViewController {
         redSwitch.isOn = true
         greenSwitch.isOn = true
         blueSwitch.isOn = true
-        redSlider.value = Float.random(in: 0.0...1.0)
-        blueSlider.value = Float.random(in: 0.0...1.0)
-        greenSlider.value = Float.random(in: 0.0...1.0)
+        redSlider.value = Float.random(in: 0...255)
+        blueSlider.value = Float.random(in: 0...255)
+        greenSlider.value = Float.random(in: 0...255)
         updateColor()
     }
     

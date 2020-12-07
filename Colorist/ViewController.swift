@@ -23,7 +23,7 @@ class ViewController: UIViewController {
         let switcher = UISwitch()
         switcher.translatesAutoresizingMaskIntoConstraints = false
         switcher.onTintColor = .systemRed
-        switcher.addTarget(self, action: #selector(redSwitchValueChanged), for: .valueChanged)
+        switcher.addTarget(self, action: #selector(switchValueChanged), for: .valueChanged)
         return switcher
     }()
     
@@ -31,7 +31,7 @@ class ViewController: UIViewController {
         let switcher = UISwitch()
         switcher.translatesAutoresizingMaskIntoConstraints = false
         switcher.onTintColor = .systemGreen
-        switcher.addTarget(self, action: #selector(greenSwitchValueChanged), for: .valueChanged)
+        switcher.addTarget(self, action: #selector(switchValueChanged), for: .valueChanged)
         return switcher
     }()
     
@@ -39,7 +39,7 @@ class ViewController: UIViewController {
         let switcher = UISwitch()
         switcher.translatesAutoresizingMaskIntoConstraints = false
         switcher.onTintColor = .systemBlue
-        switcher.addTarget(self, action: #selector(blueSwitchValueChanged), for: .valueChanged)
+        switcher.addTarget(self, action: #selector(switchValueChanged), for: .valueChanged)
         return switcher
     }()
     
@@ -47,7 +47,7 @@ class ViewController: UIViewController {
         let slider = UISlider()
         slider.translatesAutoresizingMaskIntoConstraints = false
         slider.tintColor = .systemRed
-        slider.addTarget(self, action: #selector(redSliderValueChanged), for: .valueChanged)
+        slider.addTarget(self, action: #selector(sliderValueChanged), for: .valueChanged)
         return slider
     }()
     
@@ -55,7 +55,7 @@ class ViewController: UIViewController {
         let slider = UISlider()
         slider.translatesAutoresizingMaskIntoConstraints = false
         slider.tintColor = .systemGreen
-        slider.addTarget(self, action: #selector(greenSliderValueChanged), for: .valueChanged)
+        slider.addTarget(self, action: #selector(sliderValueChanged), for: .valueChanged)
         return slider
     }()
     
@@ -63,103 +63,24 @@ class ViewController: UIViewController {
         let slider = UISlider()
         slider.translatesAutoresizingMaskIntoConstraints = false
         slider.tintColor = .systemBlue
-        slider.addTarget(self, action: #selector(blueSliderValueChanged), for: .valueChanged)
+        slider.addTarget(self, action: #selector(sliderValueChanged), for: .valueChanged)
         return slider
     }()
     
-    let whiteButton: UIButton = {
-        let button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = .lightGray
-        button.layer.borderWidth = 1
-        button.setTitle("WHITE", for: .normal)
-        button.setTitleColor(.black, for: .normal)
-        button.titleLabel?.font = UIFont(name: "Copperplate", size: 20)
-        button.addTarget(self, action: #selector(didTapWhiteButton), for: .touchUpInside)
-        return button
-    }()
+    let redLabel = CustomLabel()
+    let greenLabel = CustomLabel()
+    let blueLabel = CustomLabel()
     
-    let blackButton: UIButton = {
-        let button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = .lightGray
-        button.layer.borderWidth = 1
-        button.setTitle("BLACK", for: .normal)
-        button.setTitleColor(.black, for: .normal)
-        button.titleLabel?.font = UIFont(name: "Copperplate", size: 20)
-        button.addTarget(self, action: #selector(didTapBlackButton), for: .touchUpInside)
-        return button
-    }()
-    
-    let randomButton: UIButton = {
-        let button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = .lightGray
-        button.layer.borderWidth = 1
-        button.setTitle("RANDOM", for: .normal)
-        button.setTitleColor(.black, for: .normal)
-        button.titleLabel?.font = UIFont(name: "Copperplate", size: 20)
-        button.addTarget(self, action: #selector(didTapRandomButton), for: .touchUpInside)
-        return button
-    }()
-    
-    let resetButton: UIButton = {
-        let button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = .systemOrange
-        button.layer.borderWidth = 1
-        button.setTitle("RESET", for: .normal)
-        button.setTitleColor(.black, for: .normal)
-        button.titleLabel?.font = UIFont(name: "Copperplate", size: 20)
-        button.addTarget(self, action: #selector(didTapResetButton), for: .touchUpInside)
-        return button
-    }()
-    
-    let redLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "RED"
-        label.font = UIFont(name: "Copperplate", size: 16)
-        label.textColor = .black
-        label.lineBreakMode = .byWordWrapping
-        label.numberOfLines = 0
-        label.sizeToFit()
-        label.backgroundColor = .clear
-        label.textAlignment = .center
-        return label
-    }()
-    
-    let greenLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "GREEN"
-        label.font = UIFont(name: "Copperplate", size: 16)
-        label.textColor = .black
-        label.lineBreakMode = .byWordWrapping
-        label.numberOfLines = 0
-        label.sizeToFit()
-        label.backgroundColor = .clear
-        label.textAlignment = .center
-        return label
-    }()
-    
-    let blueLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "BLUE"
-        label.font = UIFont(name: "Copperplate", size: 16)
-        label.textColor = .black
-        label.lineBreakMode = .byWordWrapping
-        label.numberOfLines = 0
-        label.sizeToFit()
-        label.backgroundColor = .clear
-        label.textAlignment = .center
-        return label
-    }()
+    let whiteButton = CustomActionButton()
+    let blackButton = CustomActionButton()
+    let randomButton = CustomActionButton()
+    let resetButton = CustomActionButton()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemGray5
+        setupLabels()
+        setupButtons()
         setupConstraints()
     }
     
@@ -192,29 +113,14 @@ class ViewController: UIViewController {
         blueLabel.text = textBlue
     }
     
-    @objc func redSwitchValueChanged(_ sender: UISwitch) {
+    @objc func switchValueChanged(_ sender: UISwitch) {
         updateColor()
     }
     
-    @objc func greenSwitchValueChanged(_ sender: UISwitch) {
+    @objc func sliderValueChanged(_ sender: UISlider) {
         updateColor()
     }
-    
-    @objc func blueSwitchValueChanged(_ sender: UISwitch) {
-        updateColor()
-    }
-    
-    @objc func redSliderValueChanged(_ sender: UISlider) {
-        updateColor()
-    }
-    
-    @objc func greenSliderValueChanged(_ sender: UISlider) {
-        updateColor()
-    }
-    
-    @objc func blueSliderValueChanged(_ sender: UISlider) {
-        updateColor()
-    }
+
     
     @objc func didTapWhiteButton() {
         colorView.backgroundColor = .clear
@@ -251,6 +157,9 @@ class ViewController: UIViewController {
     
     @objc func didTapResetButton() {
         colorView.backgroundColor = .clear
+        redLabel.text = "RED"
+        greenLabel.text = "GREEN"
+        blueLabel.text = "BLUE"
         redSwitch.isOn = false
         greenSwitch.isOn = false
         blueSwitch.isOn = false
@@ -259,96 +168,111 @@ class ViewController: UIViewController {
         blueSlider.value = 0.0
     }
     
+    func setupLabels() {
+        redLabel.setupLabel(textLabel: "RED")
+        greenLabel.setupLabel(textLabel: "GREEN")
+        blueLabel.setupLabel(textLabel: "BLUE")
+    }
+    
+    func setupButtons() {
+        whiteButton.setupButtonTitle(text: "WHITE", color: .lightGray)
+        whiteButton.addTarget(self, action: #selector(didTapWhiteButton), for: .touchUpInside)
+        blackButton.setupButtonTitle(text: "BLACK", color: .lightGray)
+        blackButton.addTarget(self, action: #selector(didTapBlackButton), for: .touchUpInside)
+        randomButton.setupButtonTitle(text: "RANDOM", color: .lightGray)
+        randomButton.addTarget(self, action: #selector(didTapRandomButton), for: .touchUpInside)
+        resetButton.setupButtonTitle(text: "RESET", color: .systemOrange)
+        resetButton.addTarget(self, action: #selector(didTapResetButton), for: .touchUpInside)
+    }
+    
     func setupConstraints() {
         
         view.addSubview(colorView)
         colorView.heightAnchor.constraint(equalToConstant: 250).isActive = true
         colorView.widthAnchor.constraint(equalToConstant: 250).isActive = true
         colorView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        colorView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20).isActive = true
-        
-        view.addSubview(redSwitch)
-        redSwitch.topAnchor.constraint(equalTo: colorView.bottomAnchor, constant: 20).isActive = true
-        redSwitch.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 10).isActive = true
-        redSwitch.heightAnchor.constraint(equalToConstant: 30).isActive = true
-        redSwitch.widthAnchor.constraint(equalToConstant: 40).isActive = true
-        
-        view.addSubview(greenSwitch)
-        greenSwitch.topAnchor.constraint(equalTo: redSwitch.bottomAnchor, constant: 20).isActive = true
-        greenSwitch.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 10).isActive = true
-        greenSwitch.heightAnchor.constraint(equalToConstant: 30).isActive = true
-        greenSwitch.widthAnchor.constraint(equalToConstant: 40).isActive = true
-        
-        view.addSubview(blueSwitch)
-        blueSwitch.topAnchor.constraint(equalTo: greenSwitch.bottomAnchor, constant: 20).isActive = true
-        blueSwitch.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 10).isActive = true
-        blueSwitch.heightAnchor.constraint(equalToConstant: 30).isActive = true
-        blueSwitch.widthAnchor.constraint(equalToConstant: 40).isActive = true
-        
-        view.addSubview(redLabel)
-        redLabel.topAnchor.constraint(equalTo: colorView.bottomAnchor, constant: 20).isActive = true
-        redLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -5).isActive = true
-        redLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
-        redLabel.widthAnchor.constraint(equalToConstant: 60).isActive = true
-        
-        view.addSubview(greenLabel)
-        greenLabel.topAnchor.constraint(equalTo: redLabel.bottomAnchor, constant: 20).isActive = true
-        greenLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -5).isActive = true
-        greenLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
-        greenLabel.widthAnchor.constraint(equalToConstant: 60).isActive = true
-        
-        view.addSubview(blueLabel)
-        blueLabel.topAnchor.constraint(equalTo: greenLabel.bottomAnchor, constant: 20).isActive = true
-        blueLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -5).isActive = true
-        blueLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
-        blueLabel.widthAnchor.constraint(equalToConstant: 60).isActive = true
-        
-        view.addSubview(redSlider)
-        redSlider.topAnchor.constraint(equalTo: colorView.bottomAnchor, constant: 20).isActive = true
-        redSlider.leadingAnchor.constraint(equalTo: redSwitch.trailingAnchor, constant: 30).isActive = true
-        redSlider.trailingAnchor.constraint(equalTo: redLabel.leadingAnchor, constant: -20).isActive = true
-        redSlider.heightAnchor.constraint(equalToConstant: 30).isActive = true
-
-        view.addSubview(greenSlider)
-        greenSlider.topAnchor.constraint(equalTo: redSlider.bottomAnchor, constant: 20).isActive = true
-        greenSlider.leadingAnchor.constraint(equalTo: greenSwitch.trailingAnchor, constant: 30).isActive = true
-        greenSlider.trailingAnchor.constraint(equalTo: greenLabel.leadingAnchor, constant: -20).isActive = true
-        greenSlider.heightAnchor.constraint(equalToConstant: 30).isActive = true
-
-        view.addSubview(blueSlider)
-        blueSlider.topAnchor.constraint(equalTo: greenSlider.bottomAnchor, constant: 20).isActive = true
-        blueSlider.leadingAnchor.constraint(equalTo: blueSwitch.trailingAnchor, constant: 30).isActive = true
-        blueSlider.trailingAnchor.constraint(equalTo: blueLabel.leadingAnchor, constant: -20).isActive = true
-        blueSlider.heightAnchor.constraint(equalToConstant: 30).isActive = true
-        
-        view.addSubview(whiteButton)
-        whiteButton.topAnchor.constraint(equalTo: blueSwitch.bottomAnchor, constant: 30).isActive = true
-        whiteButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 10).isActive = true
-        whiteButton.trailingAnchor.constraint(equalTo: view.centerXAnchor, constant: -5).isActive = true
-        whiteButton.heightAnchor.constraint(equalToConstant: 80).isActive = true
-        whiteButton.widthAnchor.constraint(equalToConstant: 170).isActive = true
-        
-        view.addSubview(blackButton)
-        blackButton.topAnchor.constraint(equalTo: blueSwitch.bottomAnchor, constant: 30).isActive = true
-        blackButton.leadingAnchor.constraint(equalTo: view.centerXAnchor, constant: 5).isActive = true
-        blackButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -10).isActive = true
-        blackButton.heightAnchor.constraint(equalToConstant: 80).isActive = true
-        blackButton.widthAnchor.constraint(equalToConstant: 170).isActive = true
+        colorView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 40).isActive = true
         
         view.addSubview(randomButton)
-        randomButton.topAnchor.constraint(equalTo: whiteButton.bottomAnchor, constant: 10).isActive = true
+        randomButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -10).isActive = true
         randomButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 10).isActive = true
         randomButton.trailingAnchor.constraint(equalTo: view.centerXAnchor, constant: -5).isActive = true
         randomButton.heightAnchor.constraint(equalToConstant: 80).isActive = true
         randomButton.widthAnchor.constraint(equalToConstant: 170).isActive = true
         
         view.addSubview(resetButton)
-        resetButton.topAnchor.constraint(equalTo: blackButton.bottomAnchor, constant: 10).isActive = true
+        resetButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -10).isActive = true
         resetButton.leadingAnchor.constraint(equalTo: view.centerXAnchor, constant: 5).isActive = true
         resetButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -10).isActive = true
         resetButton.heightAnchor.constraint(equalToConstant: 80).isActive = true
         resetButton.widthAnchor.constraint(equalToConstant: 170).isActive = true
-    }
-    
-}
+        
+        view.addSubview(whiteButton)
+        whiteButton.bottomAnchor.constraint(equalTo: randomButton.topAnchor, constant: -10).isActive = true
+        whiteButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 10).isActive = true
+        whiteButton.trailingAnchor.constraint(equalTo: view.centerXAnchor, constant: -5).isActive = true
+        whiteButton.heightAnchor.constraint(equalToConstant: 80).isActive = true
+        whiteButton.widthAnchor.constraint(equalToConstant: 170).isActive = true
+        
+        view.addSubview(blackButton)
+        blackButton.bottomAnchor.constraint(equalTo: resetButton.topAnchor, constant: -10).isActive = true
+        blackButton.leadingAnchor.constraint(equalTo: view.centerXAnchor, constant: 5).isActive = true
+        blackButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -10).isActive = true
+        blackButton.heightAnchor.constraint(equalToConstant: 80).isActive = true
+        blackButton.widthAnchor.constraint(equalToConstant: 170).isActive = true
+        
+        view.addSubview(blueSwitch)
+        blueSwitch.bottomAnchor.constraint(equalTo: whiteButton.topAnchor, constant: -20).isActive = true
+        blueSwitch.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 10).isActive = true
+        blueSwitch.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        blueSwitch.widthAnchor.constraint(equalToConstant: 40).isActive = true
 
+        view.addSubview(blueLabel)
+        blueLabel.bottomAnchor.constraint(equalTo: whiteButton.topAnchor, constant: -20).isActive = true
+        blueLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -5).isActive = true
+        blueLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        blueLabel.widthAnchor.constraint(equalToConstant: 60).isActive = true
+        
+        view.addSubview(blueSlider)
+        blueSlider.bottomAnchor.constraint(equalTo: whiteButton.topAnchor, constant: -20).isActive = true
+        blueSlider.leadingAnchor.constraint(equalTo: blueSwitch.trailingAnchor, constant: 30).isActive = true
+        blueSlider.trailingAnchor.constraint(equalTo: blueLabel.leadingAnchor, constant: -20).isActive = true
+        blueSlider.heightAnchor.constraint(equalToConstant: 30).isActive = true
+
+        view.addSubview(greenSwitch)
+        greenSwitch.bottomAnchor.constraint(equalTo: blueSwitch.topAnchor, constant: -20).isActive = true
+        greenSwitch.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 10).isActive = true
+        greenSwitch.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        greenSwitch.widthAnchor.constraint(equalToConstant: 40).isActive = true
+        
+        view.addSubview(greenLabel)
+        greenLabel.bottomAnchor.constraint(equalTo: blueLabel.topAnchor, constant: -20).isActive = true
+        greenLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -5).isActive = true
+        greenLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        greenLabel.widthAnchor.constraint(equalToConstant: 60).isActive = true
+        
+        view.addSubview(greenSlider)
+        greenSlider.bottomAnchor.constraint(equalTo: blueSlider.topAnchor, constant: -20).isActive = true
+        greenSlider.leadingAnchor.constraint(equalTo: greenSwitch.trailingAnchor, constant: 30).isActive = true
+        greenSlider.trailingAnchor.constraint(equalTo: greenLabel.leadingAnchor, constant: -20).isActive = true
+        greenSlider.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        
+        view.addSubview(redSwitch)
+        redSwitch.bottomAnchor.constraint(equalTo: greenSwitch.topAnchor, constant: -20).isActive = true
+        redSwitch.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 10).isActive = true
+        redSwitch.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        redSwitch.widthAnchor.constraint(equalToConstant: 40).isActive = true
+        
+        view.addSubview(redLabel)
+        redLabel.bottomAnchor.constraint(equalTo: greenLabel.topAnchor, constant: -20).isActive = true
+        redLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -5).isActive = true
+        redLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        redLabel.widthAnchor.constraint(equalToConstant: 60).isActive = true
+        
+        view.addSubview(redSlider)
+        redSlider.bottomAnchor.constraint(equalTo: greenSlider.topAnchor, constant: -20).isActive = true
+        redSlider.leadingAnchor.constraint(equalTo: redSwitch.trailingAnchor, constant: 30).isActive = true
+        redSlider.trailingAnchor.constraint(equalTo: redLabel.leadingAnchor, constant: -20).isActive = true
+        redSlider.heightAnchor.constraint(equalToConstant: 30).isActive = true
+    }
+}

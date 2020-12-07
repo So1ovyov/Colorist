@@ -1,5 +1,5 @@
 //
-//  CustomElements.swift
+//  CustomUI.swift
 //  Colorist
 //
 //  Created by Максим Соловьёв on 06.12.2020.
@@ -58,7 +58,7 @@ class CustomLabel : UILabel {
     textAlignment = .center
     }
     
-    func setupLabel(textLabel: String) {
+    func setupTextLabel(textLabel: String) {
         self.text = textLabel
     }
 }

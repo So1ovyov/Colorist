@@ -169,9 +169,9 @@ class ViewController: UIViewController {
     }
     
     func setupLabels() {
-        redLabel.setupLabel(textLabel: "RED")
-        greenLabel.setupLabel(textLabel: "GREEN")
-        blueLabel.setupLabel(textLabel: "BLUE")
+        redLabel.setupTextLabel(textLabel: "RED")
+        greenLabel.setupTextLabel(textLabel: "GREEN")
+        blueLabel.setupTextLabel(textLabel: "BLUE")
     }
     
     func setupButtons() {

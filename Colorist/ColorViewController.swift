@@ -13,7 +13,7 @@ protocol ColorViewControllerDelegate: class {
     
 }
 
-class ColorViewController: UIViewController {
+class ColorViewController: UIViewController, UITextFieldDelegate {
     
     weak var delegate: ColorViewControllerDelegate?
     
@@ -81,9 +81,36 @@ class ColorViewController: UIViewController {
         return slider
     }()
     
-    let redLabel = CustomLabel()
-    let greenLabel = CustomLabel()
-    let blueLabel = CustomLabel()
+    let redTextField: UITextField = {
+        let tf = UITextField()
+        tf.translatesAutoresizingMaskIntoConstraints = false
+        tf.text = ""
+        tf.placeholder = "RED"
+        tf.textAlignment = .center
+        tf.backgroundColor = .white
+        return tf
+    }()
+    
+    let greenTextField: UITextField = {
+        let tf = UITextField()
+        tf.translatesAutoresizingMaskIntoConstraints = false
+        tf.text = ""
+        tf.placeholder = "GREEN"
+        tf.textAlignment = .center
+        tf.backgroundColor = .white
+        return tf
+    }()
+    
+    let blueTextField: UITextField = {
+        let tf = UITextField()
+        tf.translatesAutoresizingMaskIntoConstraints = false
+        tf.text = ""
+        tf.placeholder = "BLUE"
+        tf.textAlignment = .center
+        tf.backgroundColor = .white
+        tf.returnKeyType = .done
+        return tf
+    }()
     
     let whiteButton = CustomActionButton()
     let blackButton = CustomActionButton()
@@ -91,13 +118,36 @@ class ColorViewController: UIViewController {
     let resetButton = CustomActionButton()
         
     override func viewDidLoad() {
+        
         super.viewDidLoad()
         view.backgroundColor = .systemGray5
         title = "Цвет"
-        setupLabels()
+        
+        self.redTextField.delegate = self
+        self.greenTextField.delegate = self
+        self.blueTextField.delegate = self
+        
+        setupTextFields()
         setupButtons()
         setupConstraints()
         setupNavigationController()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    @objc func keyboardWillShow(notification: NSNotification) {
+        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
+            if self.view.frame.origin.y == 0 {
+                self.view.frame.origin.y -= keyboardSize.height
+            }
+        }
+    }
+    
+    @objc func keyboardWillHide(notification: NSNotification) {
+        if self.view.frame.origin.y != 0 {
+            self.view.frame.origin.y = 0
+        }
     }
     
     @objc func didSelectColor(_ color: UIColor) {
@@ -107,7 +157,7 @@ class ColorViewController: UIViewController {
         
     }
     
-    func updateColor() {
+    private func updateColor() {
         
         var red: CGFloat = 0
         var green: CGFloat = 0
@@ -131,9 +181,9 @@ class ColorViewController: UIViewController {
         
         let color = UIColor(red: red/255, green: green/255, blue: blue/255, alpha: 1)
         colorView.backgroundColor = color
-        redLabel.text = textRed
-        greenLabel.text = textGreen
-        blueLabel.text = textBlue
+        redTextField.text = textRed
+        greenTextField.text = textGreen
+        blueTextField.text = textBlue
     }
     
     @objc func switchValueChanged(_ sender: UISwitch) {
@@ -180,9 +230,12 @@ class ColorViewController: UIViewController {
     
     @objc func didTapResetButton() {
         colorView.backgroundColor = .clear
-        redLabel.text = "RED"
-        greenLabel.text = "GREEN"
-        blueLabel.text = "BLUE"
+        redTextField.text = ""
+        greenTextField.text = ""
+        blueTextField.text = ""
+        redTextField.placeholder = "RED"
+        greenTextField.placeholder = "GREEN"
+        blueTextField.placeholder = "BLUE"
         redSwitch.isOn = false
         greenSwitch.isOn = false
         blueSwitch.isOn = false
@@ -191,13 +244,13 @@ class ColorViewController: UIViewController {
         blueSlider.value = 0.0
     }
     
-    func setupLabels() {
-        redLabel.setupTextLabel(textLabel: "RED")
-        greenLabel.setupTextLabel(textLabel: "GREEN")
-        blueLabel.setupTextLabel(textLabel: "BLUE")
+    private func setupTextFields() {
+        redTextField.placeholder = "RED"
+        greenTextField.placeholder = "GREEN"
+        blueTextField.placeholder = "BLUE"
     }
     
-    func setupButtons() {
+    private func setupButtons() {
         whiteButton.setupButtonTitle(text: "WHITE", color: .lightGray)
         whiteButton.addTarget(self, action: #selector(didTapWhiteButton), for: .touchUpInside)
         blackButton.setupButtonTitle(text: "BLACK", color: .lightGray)
@@ -208,7 +261,7 @@ class ColorViewController: UIViewController {
         resetButton.addTarget(self, action: #selector(didTapResetButton), for: .touchUpInside)
     }
     
-    func setupConstraints() {
+    private func setupConstraints() {
         
         view.addSubview(colorView)
         colorView.heightAnchor.constraint(equalToConstant: 250).isActive = true
@@ -250,16 +303,16 @@ class ColorViewController: UIViewController {
         blueSwitch.heightAnchor.constraint(equalToConstant: 30).isActive = true
         blueSwitch.widthAnchor.constraint(equalToConstant: 40).isActive = true
 
-        view.addSubview(blueLabel)
-        blueLabel.bottomAnchor.constraint(equalTo: whiteButton.topAnchor, constant: -20).isActive = true
-        blueLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -5).isActive = true
-        blueLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
-        blueLabel.widthAnchor.constraint(equalToConstant: 60).isActive = true
+        view.addSubview(blueTextField)
+        blueTextField.bottomAnchor.constraint(equalTo: whiteButton.topAnchor, constant: -20).isActive = true
+        blueTextField.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -5).isActive = true
+        blueTextField.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        blueTextField.widthAnchor.constraint(equalToConstant: 60).isActive = true
         
         view.addSubview(blueSlider)
         blueSlider.bottomAnchor.constraint(equalTo: whiteButton.topAnchor, constant: -20).isActive = true
         blueSlider.leadingAnchor.constraint(equalTo: blueSwitch.trailingAnchor, constant: 30).isActive = true
-        blueSlider.trailingAnchor.constraint(equalTo: blueLabel.leadingAnchor, constant: -20).isActive = true
+        blueSlider.trailingAnchor.constraint(equalTo: blueTextField.leadingAnchor, constant: -20).isActive = true
         blueSlider.heightAnchor.constraint(equalToConstant: 30).isActive = true
 
         view.addSubview(greenSwitch)
@@ -268,16 +321,16 @@ class ColorViewController: UIViewController {
         greenSwitch.heightAnchor.constraint(equalToConstant: 30).isActive = true
         greenSwitch.widthAnchor.constraint(equalToConstant: 40).isActive = true
         
-        view.addSubview(greenLabel)
-        greenLabel.bottomAnchor.constraint(equalTo: blueLabel.topAnchor, constant: -20).isActive = true
-        greenLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -5).isActive = true
-        greenLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
-        greenLabel.widthAnchor.constraint(equalToConstant: 60).isActive = true
+        view.addSubview(greenTextField)
+        greenTextField.bottomAnchor.constraint(equalTo: blueTextField.topAnchor, constant: -20).isActive = true
+        greenTextField.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -5).isActive = true
+        greenTextField.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        greenTextField.widthAnchor.constraint(equalToConstant: 60).isActive = true
         
         view.addSubview(greenSlider)
         greenSlider.bottomAnchor.constraint(equalTo: blueSlider.topAnchor, constant: -20).isActive = true
         greenSlider.leadingAnchor.constraint(equalTo: greenSwitch.trailingAnchor, constant: 30).isActive = true
-        greenSlider.trailingAnchor.constraint(equalTo: greenLabel.leadingAnchor, constant: -20).isActive = true
+        greenSlider.trailingAnchor.constraint(equalTo: greenTextField.leadingAnchor, constant: -20).isActive = true
         greenSlider.heightAnchor.constraint(equalToConstant: 30).isActive = true
         
         view.addSubview(redSwitch)
@@ -286,16 +339,16 @@ class ColorViewController: UIViewController {
         redSwitch.heightAnchor.constraint(equalToConstant: 30).isActive = true
         redSwitch.widthAnchor.constraint(equalToConstant: 40).isActive = true
         
-        view.addSubview(redLabel)
-        redLabel.bottomAnchor.constraint(equalTo: greenLabel.topAnchor, constant: -20).isActive = true
-        redLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -5).isActive = true
-        redLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
-        redLabel.widthAnchor.constraint(equalToConstant: 60).isActive = true
+        view.addSubview(redTextField)
+        redTextField.bottomAnchor.constraint(equalTo: greenTextField.topAnchor, constant: -20).isActive = true
+        redTextField.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -5).isActive = true
+        redTextField.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        redTextField.widthAnchor.constraint(equalToConstant: 60).isActive = true
         
         view.addSubview(redSlider)
         redSlider.bottomAnchor.constraint(equalTo: greenSlider.topAnchor, constant: -20).isActive = true
         redSlider.leadingAnchor.constraint(equalTo: redSwitch.trailingAnchor, constant: 30).isActive = true
-        redSlider.trailingAnchor.constraint(equalTo: redLabel.leadingAnchor, constant: -20).isActive = true
+        redSlider.trailingAnchor.constraint(equalTo: redTextField.leadingAnchor, constant: -20).isActive = true
         redSlider.heightAnchor.constraint(equalToConstant: 30).isActive = true
     }
     
@@ -313,5 +366,47 @@ class ColorViewController: UIViewController {
         let editButtonItem: UIBarButtonItem = UIBarButtonItem(customView: editButton)
         self.navigationItem.rightBarButtonItem = editButtonItem
     }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
+        
+        colorView.backgroundColor = .clear
+        redSwitch.isOn = true
+        greenSwitch.isOn = true
+        blueSwitch.isOn = true
+        let redColor = Float(redTextField.text ?? "")
+        let greenColor = Float(greenTextField.text ?? "")
+        let blueColor = Float(blueTextField.text ?? "")
+        redSlider.value = redColor ?? 0
+        greenSlider.value = greenColor ?? 0
+        blueSlider.value = blueColor ?? 0
+        updateColor()
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        
+        if textField == redTextField {
+            greenTextField.becomeFirstResponder()
+        } else if textField == greenTextField {
+            blueTextField.becomeFirstResponder()
+        } else if textField == blueTextField {
+            self.view.endEditing(true)
+        
+            colorView.backgroundColor = .clear
+            redSwitch.isOn = true
+            greenSwitch.isOn = true
+            blueSwitch.isOn = true
+            let redColor = Float(redTextField.text ?? "")
+            let greenColor = Float(greenTextField.text ?? "")
+            let blueColor = Float(blueTextField.text ?? "")
+            redSlider.value = redColor ?? 0
+            greenSlider.value = greenColor ?? 0
+            blueSlider.value = blueColor ?? 0
+            updateColor()
+        }
+        return false
+    }
+    
+    
     
 }

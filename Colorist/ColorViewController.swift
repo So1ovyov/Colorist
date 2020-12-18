@@ -7,7 +7,15 @@
 
 import UIKit
 
+protocol ColorViewControllerDelegate: class {
+    
+    func colorViewController(_ viewController: ColorViewController, didSelectColor: UIColor)
+    
+}
+
 class ColorViewController: UIViewController {
+    
+    weak var delegate: ColorViewControllerDelegate?
     
     let colorView: UIView = {
         let view = UIView()
@@ -85,10 +93,18 @@ class ColorViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemGray5
+        title = "Цвет"
         setupLabels()
         setupButtons()
         setupConstraints()
         setupNavigationController()
+    }
+    
+    @objc func didSelectColor(_ color: UIColor) {
+        let color = colorView.backgroundColor!
+        delegate?.colorViewController(self, didSelectColor: color)
+        self.navigationController?.popViewController(animated: true)
+        
     }
     
     func updateColor() {
@@ -286,34 +302,16 @@ class ColorViewController: UIViewController {
     private func setupNavigationController() {
         navigationController?.setNavigationBarHidden(false, animated: true)
         
-        let logoutButton: UIButton = {
-            let button = UIButton()
-            button.setImage(UIImage(named: "logout"), for: .normal)
-            button.sizeToFit()
-            button.addTarget(self, action: #selector(returnTap), for: .touchUpInside)
-            return button
-        }()
-        
         let editButton: UIButton = {
             let button = UIButton()
             button.setImage(UIImage(named: "edit"), for: .normal)
             button.sizeToFit()
-            button.addTarget(self, action: #selector(editTap), for: .touchUpInside)
+            button.addTarget(self, action: #selector(didSelectColor), for: .touchUpInside)
             return button
         }()
             
-        let logoutButtonItem:UIBarButtonItem = UIBarButtonItem(customView: logoutButton)
-        let editButtonItem:UIBarButtonItem = UIBarButtonItem(customView: editButton)
-        self.navigationItem.leftBarButtonItem = logoutButtonItem
+        let editButtonItem: UIBarButtonItem = UIBarButtonItem(customView: editButton)
         self.navigationItem.rightBarButtonItem = editButtonItem
-    }
-    
-    @objc func returnTap() {
-        self.dismiss(animated: true, completion: nil)
-    }
-    
-    @objc func editTap() {
-        self.dismiss(animated: true, completion: nil)
     }
     
 }

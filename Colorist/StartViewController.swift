@@ -13,9 +13,9 @@ class StartViewController: UIViewController, UINavigationControllerDelegate  {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
-        setupConstraints()
+        view.backgroundColor = .systemGray5
         setupCustomUI()
+        setupConstraints()
     }
     
     private func setupCustomUI() {
@@ -26,6 +26,8 @@ class StartViewController: UIViewController, UINavigationControllerDelegate  {
     private func setupConstraints() {
         
         view.addSubview(editButton)
+        
+        editButton.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
             editButton.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),

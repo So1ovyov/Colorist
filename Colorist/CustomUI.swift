@@ -21,7 +21,6 @@ class CustomActionButton : UIButton {
     }
 
    private func setup() {
-    translatesAutoresizingMaskIntoConstraints = false
     layer.borderWidth = 1
     layer.cornerRadius = 10
     layer.masksToBounds = true
@@ -48,7 +47,6 @@ class CustomLabel : UILabel {
     }
 
    private func setup() {
-    translatesAutoresizingMaskIntoConstraints = false
     font = UIFont(name: "Copperplate", size: 16)
     textColor = .black
     lineBreakMode = .byWordWrapping
@@ -60,5 +58,29 @@ class CustomLabel : UILabel {
     
     func setupTextLabel(textLabel: String) {
         self.text = textLabel
+    }
+}
+
+class CustomTextField : UITextField {
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setup()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        setup()
+    }
+
+   private func setup() {
+    text = ""
+    textAlignment = .center
+    backgroundColor = .white
+    keyboardType = .numberPad
+    }
+    
+    func setupPlaceholder(text: String) {
+        self.placeholder = text
     }
 }

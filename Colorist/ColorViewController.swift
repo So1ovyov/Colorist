@@ -126,7 +126,7 @@ class ColorViewController: UIViewController, UITextFieldDelegate {
         self.navigationController?.popViewController(animated: true)
         
     }
-    
+
     private func updateColor() {
         
         var red: CGFloat = 0
@@ -156,6 +156,13 @@ class ColorViewController: UIViewController, UITextFieldDelegate {
         blueTextField.text = textBlue
     }
     
+    private func setupColorView() {
+        colorView.backgroundColor = .clear
+        redSwitch.isOn = true
+        greenSwitch.isOn = true
+        blueSwitch.isOn = true
+    }
+    
     @objc func switchValueChanged(_ sender: UISwitch) {
         updateColor()
     }
@@ -166,10 +173,7 @@ class ColorViewController: UIViewController, UITextFieldDelegate {
 
     
     @objc func didTapWhiteButton() {
-        colorView.backgroundColor = .clear
-        redSwitch.isOn = true
-        greenSwitch.isOn = true
-        blueSwitch.isOn = true
+        setupColorView()
         redSlider.value = 255
         greenSlider.value = 255
         blueSlider.value = 255
@@ -177,10 +181,7 @@ class ColorViewController: UIViewController, UITextFieldDelegate {
     }
     
     @objc func didTapBlackButton() {
-        colorView.backgroundColor = .clear
-        redSwitch.isOn = true
-        greenSwitch.isOn = true
-        blueSwitch.isOn = true
+        setupColorView()
         redSlider.value = 0
         greenSlider.value = 0
         blueSlider.value = 0
@@ -188,10 +189,7 @@ class ColorViewController: UIViewController, UITextFieldDelegate {
     }
     
     @objc func didTapRandomButton() {
-        colorView.backgroundColor = .clear
-        redSwitch.isOn = true
-        greenSwitch.isOn = true
-        blueSwitch.isOn = true
+        setupColorView()
         redSlider.value = Float.random(in: 0...255)
         blueSlider.value = Float.random(in: 0...255)
         greenSlider.value = Float.random(in: 0...255)
@@ -224,9 +222,9 @@ class ColorViewController: UIViewController, UITextFieldDelegate {
         
         
         let flexSpaceRed = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-        let doneRed: UIBarButtonItem = UIBarButtonItem(title: "Pick GREEN", style: .done, target: self, action: #selector(self.redButtonAction))
+        let doneRed: UIBarButtonItem = UIBarButtonItem(title: "Next", style: .done, target: self, action: #selector(self.redButtonAction))
         let flexSpaceGreen = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-        let doneGreen: UIBarButtonItem = UIBarButtonItem(title: "Pick BLUE", style: .done, target: self, action: #selector(self.greenButtonAction))
+        let doneGreen: UIBarButtonItem = UIBarButtonItem(title: "Next", style: .done, target: self, action: #selector(self.greenButtonAction))
         let flexSpaceBlue = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
         let doneBlue: UIBarButtonItem = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(self.blueButtonAction))
         
@@ -257,10 +255,7 @@ class ColorViewController: UIViewController, UITextFieldDelegate {
     @objc func blueButtonAction(){
         blueTextField.resignFirstResponder()
         self.view.endEditing(true)
-        colorView.backgroundColor = .clear
-        redSwitch.isOn = true
-        greenSwitch.isOn = true
-        blueSwitch.isOn = true
+        setupColorView()
         let redColor = Float(redTextField.text ?? "")
         let greenColor = Float(greenTextField.text ?? "")
         let blueColor = Float(blueTextField.text ?? "")
@@ -441,10 +436,7 @@ class ColorViewController: UIViewController, UITextFieldDelegate {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard redTextField.text != "" || greenTextField.text != "" || blueTextField.text != "" else { return }
         self.view.endEditing(true)
-        colorView.backgroundColor = .clear
-        redSwitch.isOn = true
-        greenSwitch.isOn = true
-        blueSwitch.isOn = true
+        setupColorView()
         let redColor = Float(redTextField.text ?? "")
         let greenColor = Float(greenTextField.text ?? "")
         let blueColor = Float(blueTextField.text ?? "")

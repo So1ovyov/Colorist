@@ -41,6 +41,7 @@ class StartViewController: UIViewController, UINavigationControllerDelegate  {
         let vc = ColorViewController()
         vc.modalPresentationStyle = .fullScreen
         vc.delegate = self
+        vc.colorView.backgroundColor = view.backgroundColor
         navigationController?.pushViewController(vc, animated: true)
     }
     

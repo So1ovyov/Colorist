@@ -16,6 +16,7 @@ protocol ColorViewControllerDelegate: class {
 class ColorViewController: UIViewController, UITextFieldDelegate {
     
     weak var delegate: ColorViewControllerDelegate?
+    var mainViewColor: UIColor!
     
     let colorView: UIView = {
         let view = UIView()
@@ -81,17 +82,19 @@ class ColorViewController: UIViewController, UITextFieldDelegate {
     let blackButton = CustomActionButton()
     let randomButton = CustomActionButton()
     let resetButton = CustomActionButton()
-        
+    
     override func viewDidLoad() {
         
         super.viewDidLoad()
         view.backgroundColor = .systemGray5
         title = "Цвет"
+        colorView.backgroundColor = mainViewColor
         
         self.redTextField.delegate = self
         self.greenTextField.delegate = self
         self.blueTextField.delegate = self
         
+        setSliders()
         setupTextFields()
         setupButtons()
         setupConstraints()
@@ -127,6 +130,19 @@ class ColorViewController: UIViewController, UITextFieldDelegate {
         
     }
 
+    private func setSliders() {
+        let ciColor = CIColor(color: mainViewColor)
+        redSwitch.isOn = true
+        greenSwitch.isOn = true
+        blueSwitch.isOn = true
+        redSlider.value = Float((ciColor.red)*255)
+        greenSlider.value = Float((ciColor.green)*255)
+        blueSlider.value = Float((ciColor.blue)*255)
+        redTextField.text = String(Int(Float(ciColor.red)*255))
+        greenTextField.text = String(Int(Float(ciColor.green)*255))
+        blueTextField.text = String(Int(Float(ciColor.blue)*255))
+    }
+    
     private func updateColor() {
         
         var red: CGFloat = 0
@@ -222,11 +238,11 @@ class ColorViewController: UIViewController, UITextFieldDelegate {
         
         
         let flexSpaceRed = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-        let doneRed: UIBarButtonItem = UIBarButtonItem(title: "Next", style: .done, target: self, action: #selector(self.redButtonAction))
+        let doneRed: UIBarButtonItem = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(self.doneButtonAction))
         let flexSpaceGreen = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-        let doneGreen: UIBarButtonItem = UIBarButtonItem(title: "Next", style: .done, target: self, action: #selector(self.greenButtonAction))
+        let doneGreen: UIBarButtonItem = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(self.doneButtonAction))
         let flexSpaceBlue = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-        let doneBlue: UIBarButtonItem = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(self.blueButtonAction))
+        let doneBlue: UIBarButtonItem = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(self.doneButtonAction))
         
         let itemsRed = [flexSpaceRed, doneRed]
         doneToolbarRed.items = itemsRed
@@ -243,17 +259,9 @@ class ColorViewController: UIViewController, UITextFieldDelegate {
         doneToolbarBlue.sizeToFit()
         blueTextField.inputAccessoryView = doneToolbarBlue
     }
-    
-    @objc func redButtonAction(){
-        greenTextField.becomeFirstResponder()
-    }
-    
-    @objc func greenButtonAction(){
-        blueTextField.becomeFirstResponder()
-    }
-    
-    @objc func blueButtonAction(){
-        blueTextField.resignFirstResponder()
+
+    @objc func doneButtonAction(){
+        self.resignFirstResponder()
         self.view.endEditing(true)
         setupColorView()
         let redColor = Float(redTextField.text ?? "")
